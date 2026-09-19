@@ -4,8 +4,8 @@ import { useState, type ReactElement } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   ArrowDown01Icon,
+  FoldersIcon,
   InboxIcon,
-  LibraryIcon,
   MoreHorizontalIcon,
   PanelLeftIcon,
   Plug01Icon,
@@ -55,7 +55,7 @@ interface Props {
   onOpenAutomations: () => void;
   onOpenLibrary: () => void;
   onOpenConnectors: () => void;
-  onOpenSettings: () => void;
+  onOpenProfile: () => void;
   inboxItems: InboxItem[];
   onAdvanceCard: (id: string) => void;
   founderName: string;
@@ -88,7 +88,7 @@ export function Sidebar({
   onOpenAutomations,
   onOpenLibrary,
   onOpenConnectors,
-  onOpenSettings,
+  onOpenProfile,
   inboxItems,
   onAdvanceCard,
   founderName,
@@ -247,7 +247,7 @@ export function Sidebar({
       </Tip>
       <Tip label="Library">
         <button className={cn(navItem, collapsed && "justify-center px-0")} onClick={onOpenLibrary}>
-          <HugeiconsIcon icon={LibraryIcon} strokeWidth={2} className="size-4 shrink-0" />
+          <HugeiconsIcon icon={FoldersIcon} strokeWidth={2} className="size-4 shrink-0" />
           {!collapsed && "Library"}
         </button>
       </Tip>
@@ -360,14 +360,14 @@ export function Sidebar({
         {!collapsed ? (
           <div className="flex items-center gap-2 rounded-xl bg-card px-2 py-1.5 shadow-xs">
             <button
-              onClick={onOpenSettings}
+              onClick={onOpenProfile}
               title={founderName || "Profile settings"}
               className="flex size-7 flex-none items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground"
             >
               {founderName ? founderName.charAt(0).toUpperCase() : "F"}
             </button>
             <button
-              onClick={onOpenSettings}
+              onClick={onOpenProfile}
               className="min-w-0 flex-1 truncate text-left text-[13px] font-medium"
             >
               {founderName || "Profile"}
@@ -414,7 +414,7 @@ export function Sidebar({
             <ThemeToggle />
             <Tip label={founderName || "Profile"}>
               <button
-                onClick={onOpenSettings}
+                onClick={onOpenProfile}
                 aria-label={founderName || "Profile"}
                 className="flex size-9 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground"
               >

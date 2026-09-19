@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { trpc } from "@/lib/trpc";
 import { Sidebar } from "@/features/navigation/sidebar";
-import { LibraryModal } from "@/features/library/library-modal";
+import { LibraryModal } from "@/features/library";
 import { ConnectModal } from "@/features/settings/connect-modal";
 import { SettingsModal } from "@/features/settings/settings-modal";
+import { ProfileModal } from "@/features/profile";
 import type { Project } from "@/features/projects/api";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { PanelRightIcon } from "@hugeicons/core-free-icons";
@@ -62,6 +63,7 @@ function Board() {
   const [connectOpen, setConnectOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [libraryOpen, setLibraryOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const [connections, setConnections] = useState<Record<string, boolean>>({});
   const [liveLabel, setLiveLabel] = useState("");
 
@@ -232,7 +234,7 @@ function Board() {
         onOpenAutomations={() => setSettingsOpen(true)}
         onOpenLibrary={() => setLibraryOpen(true)}
         onOpenConnectors={() => setConnectOpen(true)}
-        onOpenSettings={() => setSettingsOpen(true)}
+        onOpenProfile={() => setProfileOpen(true)}
         inboxItems={planned.map((c) => ({ id: c.id, title: c.title }))}
         onAdvanceCard={handleAdvance}
         founderName={name}
@@ -379,6 +381,10 @@ function Board() {
       <SettingsModal
         open={settingsOpen}
         onOpenChange={setSettingsOpen}
+      />
+      <ProfileModal
+        open={profileOpen}
+        onOpenChange={setProfileOpen}
         onProfileSaved={(n) => setName(n)}
       />
       <LibraryModal open={libraryOpen} onOpenChange={setLibraryOpen} />

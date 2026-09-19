@@ -9,12 +9,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-
-interface Idea {
-  id: number;
-  title: string;
-  project: string;
-}
+import { fetchLibraryIdeas, type LibraryIdea } from "./api";
 
 interface Props {
   open: boolean;
@@ -22,30 +17,13 @@ interface Props {
 }
 
 export function LibraryModal({ open, onOpenChange }: Props) {
-  const [ideas, setIdeas] = useState<Idea[]>([]);
+  const [ideas, setIdeas] = useState<LibraryIdea[]>([]);
 
   useEffect(() => {
     if (!open) return;
     (async () => {
       try {
-        const [cards, projects] = await Promise.all([
-          fetch("/api/cards", { cache: "no-store" }).then((r) => r.json()) as Promise<
-            { id: number; title: string; type: string; project_id: number }[]
-          >,
-          fetch("/api/projects", { cache: "no-store" }).then((r) => r.json()) as Promise<
-            { id: number; name: string }[]
-          >,
-        ]);
-        const names = new Map(projects.map((p) => [p.id, p.name]));
-        setIdeas(
-          cards
-            .filter((c) => c.type === "idea")
-            .map((c) => ({
-              id: c.id,
-              title: c.title,
-              project: names.get(c.project_id) ?? "Unknown",
-            }))
-        );
+        setIdeas(await fetchLibraryIdeas());
       } catch {}
     })();
   }, [open ]);
