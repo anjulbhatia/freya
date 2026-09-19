@@ -9,9 +9,8 @@ import { LibraryModal } from "@/features/library/library-modal";
 import { ConnectModal } from "@/features/settings/connect-modal";
 import { SettingsModal } from "@/features/settings/settings-modal";
 import type { Project } from "@/features/projects/api";
-import { Button } from "@/components/ui/button";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { WandSparklesIcon } from "@hugeicons/core-free-icons";
+import { PanelRightIcon } from "@hugeicons/core-free-icons";
 import { ChatPanel } from "@/features/chat/chat-panel";
 import { KanbanColumn } from "@/features/kanban/kanban-column";
 import { getProfile } from "@/lib/store";
@@ -56,10 +55,10 @@ function Board() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [ready, setReady] = useState(false);
-  const [processing, setProcessing] = useState(false);
   const [activeId, setActiveId] = useQueryState("project", parseAsInteger);
   const [query, setQuery] = useQueryState("q", { defaultValue: "" });
   const [collapsed, setCollapsed] = useState(false);
+  const [boardHidden, setBoardHidden] = useState(false);
   const [connectOpen, setConnectOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [libraryOpen, setLibraryOpen] = useState(false);
@@ -194,21 +193,6 @@ function Board() {
     updateCardMut.mutate({ id: Number(id), status: column });
   }
 
-  async function handleProcessNext() {
-    if (activeId === null) return;
-    setProcessing(true);
-    try {
-      await fetch("/api/agent/process-next", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ project_id: activeId }),
-      });
-      invalidateCards();
-    } finally {
-      setProcessing(false);
-    }
-  }
-
   function handleSelectProject(id: number) {
     setActiveId(id);
   }
@@ -255,19 +239,19 @@ function Board() {
         webmcpLabel={liveLabel}
       />
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-        <div className="flex h-12 flex-none items-center justify-between px-4">
+        <div className="flex h-12 flex-none items-center px-4">
           <div className="truncate text-sm font-semibold">
             {active ? active.name : "FounderCycle"}
           </div>
-          <Button size="sm" onClick={handleProcessNext} disabled={processing}>
-            <HugeiconsIcon icon={WandSparklesIcon} strokeWidth={2} />
-            {processing ? "Working…" : "Process next"}
-          </Button>
         </div>
       <main ref={mainRef} className="flex min-h-0 flex-1 gap-0 overflow-hidden px-3 pb-3">
         <section
-          style={{ width: `${chatPct}%` }}
-          className="flex min-h-0 min-w-0 flex-none flex-col rounded-2xl bg-muted/40 p-2"
+          style={boardHidden ? undefined : { width: `${chatPct}%` }}
+          className={
+            boardHidden
+              ? "flex min-h-0 min-w-0 flex-1 flex-col rounded-2xl bg-muted/40 p-2"
+              : "flex min-h-0 min-w-0 flex-none flex-col rounded-2xl bg-muted/40 p-2"
+          }
         >
           <div className="flex items-center gap-2 px-2 pt-1 pb-2">
             <span className="text-[13px] font-semibold">Assistant</span>
@@ -277,10 +261,16 @@ function Board() {
           </div>
         </section>
 
+        {!boardHidden && (
         <div
           role="separator"
           aria-orientation="vertical"
-          aria-label="Resize chat and board"
+          aria-label="Resize chat and board. Click to hide board."
+          title="Drag to resize. Click to hide board."
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") setBoardHidden(true);
+          }}
           onPointerDown={(e) => {
             (e.target as HTMLElement).setPointerCapture(e.pointerId);
             dragRef.current = { startX: e.clientX, startPct: chatPct };
@@ -295,9 +285,11 @@ function Board() {
             const next = d.startPct + ((e.clientX - d.startX) / w) * 100;
             setChatPct(Math.min(60, Math.max(33, next)));
           }}
-          onPointerUp={() => {
+          onPointerUp={(e) => {
+            const d = dragRef.current;
             dragRef.current = null;
             setResizing(false);
+            if (d && Math.abs(e.clientX - d.startX) < 5) setBoardHidden(true);
           }}
           onPointerCancel={() => {
             dragRef.current = null;
@@ -312,7 +304,20 @@ function Board() {
             )}
           />
         </div>
+        )}
 
+        {boardHidden && (
+          <button
+            onClick={() => setBoardHidden(false)}
+            aria-label="Show board"
+            title="Show board"
+            className="ml-1 flex w-6 flex-none cursor-pointer flex-col items-center justify-center rounded-2xl bg-muted/40 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          >
+            <HugeiconsIcon icon={PanelRightIcon} strokeWidth={2} className="size-4" />
+          </button>
+        )}
+
+        {!boardHidden && (
         <section className="min-h-0 min-w-0 flex-1 overflow-x-auto">
           <div className="grid h-full min-h-0 grid-cols-[repeat(3,minmax(230px,1fr))] gap-3">
             <div className="min-h-0 min-w-0">
@@ -353,6 +358,7 @@ function Board() {
             </div>
           </div>
         </section>
+        )}
       </main>
       </div>
 
