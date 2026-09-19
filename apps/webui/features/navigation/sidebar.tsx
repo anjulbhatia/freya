@@ -411,6 +411,7 @@ export function Sidebar({
           </div>
         ) : (
           <div className="flex flex-col items-center gap-1">
+            <ThemeToggle />
             <Tip label={founderName || "Profile"}>
               <button
                 onClick={onOpenSettings}
@@ -420,7 +421,6 @@ export function Sidebar({
                 {founderName ? founderName.charAt(0).toUpperCase() : "F"}
               </button>
             </Tip>
-            <ThemeToggle />
           </div>
         )}
       </div>
