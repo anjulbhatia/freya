@@ -1,4 +1,4 @@
-import { DatabaseSync } from "node:sqlite";
+import { DatabaseSync, type SQLInputValue } from "node:sqlite";
 import { readFileSync, mkdirSync, existsSync } from "node:fs";
 import { homedir } from "node:os";
 import { join, dirname } from "node:path";
@@ -143,7 +143,7 @@ export function updateCard(
   patch: { type?: string; status?: string; summary?: string; links?: string[] }
 ): void {
   const sets: string[] = [];
-  const params: unknown[] = [];
+  const params: SQLInputValue[] = [];
   if (patch.type !== undefined) {
     sets.push("type = ?");
     params.push(patch.type);
@@ -231,7 +231,7 @@ export function listProjects(includeArchived = false): Project[] {
     .prepare(
       `SELECT id, name, archived FROM projects ${includeArchived ? "" : "WHERE archived = 0"} ORDER BY id ASC`
     )
-    .all() as Project[];
+    .all() as unknown as Project[];
 }
 
 export function createProject(name: string): number {

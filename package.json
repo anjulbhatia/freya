@@ -1,12 +1,17 @@
 {
-  "name": "multiagent",
+  "name": "foundercycle",
   "version": "0.1.0",
   "private": true,
+  "workspaces": ["apps/*", "packages/*"],
   "scripts": {
-    "dev": "next dev apps/webui",
-    "build": "next build apps/webui",
-    "start": "next start apps/webui",
-    "lint": "eslint apps/webui"
+    "dev": "bun run --filter webui dev",
+    "build": "bun run --filter webui build",
+    "start": "bun run --filter webui start",
+    "lint": "bun run --filter webui lint",
+    "typecheck": "bun run --filter webui typecheck && bun run --filter foundercycle typecheck",
+    "db:up": "docker compose up -d db",
+    "db:migrate": "bun run --filter foundercycle db:migrate",
+    "db:studio": "bun run --filter foundercycle db:studio"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.69",
@@ -56,7 +61,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",

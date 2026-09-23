@@ -2,8 +2,13 @@
   "name": "foundercycle",
   "version": "0.1.0",
   "private": true,
-  "description": "FounderCycle agent kernel: classifier, flows, integrations, sqlite store. UI-agnostic, integrates separately.",
+  "description": "FounderCycle agent kernel: classifier, flows, integrations, store. UI-agnostic.",
   "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
+  },
   "exports": {
     "./agent/*": "./src/agent/*.ts",
     "./integrations/*": "./src/integrations/*.ts",
