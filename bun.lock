@@ -68,6 +68,9 @@
     "packages/foundercycle": {
       "name": "foundercycle",
       "version": "0.1.0",
+      "dependencies": {
+        "zod": "^4.6.4",
+      },
     },
   },
   "trustedDependencies": [

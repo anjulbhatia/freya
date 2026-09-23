@@ -99,12 +99,22 @@ export type Card = {
   summary: string;
   links_json: string;
   approval_flag: number;
+  project_id: number;
+  created_at: string;
 };
 
 export function getLatestProfile(): Profile | undefined {
   return getDb()
     .prepare("SELECT id, name, context FROM profiles ORDER BY id DESC LIMIT 1")
     .get() as Profile | undefined;
+}
+
+/** Insert a new profile revision. UI must use this, never inline SQL. */
+export function saveProfile(name: string, context = ""): Profile {
+  const res = getDb()
+    .prepare("INSERT INTO profiles (name, context) VALUES (?, ?)")
+    .run(name, context);
+  return { id: Number(res.lastInsertRowid), name, context };
 }
 
 /** Next actionable card: planned first, then ongoing, by priority. */
@@ -131,16 +141,32 @@ export function listCards(status?: string): Card[] {
   if (status) {
     return database
       .prepare("SELECT * FROM cards WHERE status = ? ORDER BY priority DESC, id DESC")
-      .all(status) as Card[];
+      .all(status) as unknown as Card[];
   }
   return database
     .prepare("SELECT * FROM cards ORDER BY priority DESC, id DESC")
-    .all() as Card[];
+    .all() as unknown as Card[];
+}
+
+/** Cards scoped to one project. UI must use this, never inline SQL. */
+export function listCardsByProject(projectId: number): Card[] {
+  return getDb()
+    .prepare(
+      "SELECT id, title, type, status, priority, summary, links_json, approval_flag, created_at FROM cards WHERE project_id = ? ORDER BY priority DESC, id DESC"
+    )
+    .all(projectId) as unknown as Card[];
 }
 
 export function updateCard(
   id: number,
-  patch: { type?: string; status?: string; summary?: string; links?: string[] }
+  patch: {
+    type?: string;
+    status?: string;
+    summary?: string;
+    links?: string[];
+    priority?: number;
+    approvalFlag?: number;
+  }
 ): void {
   const sets: string[] = [];
   const params: SQLInputValue[] = [];
@@ -159,6 +185,14 @@ export function updateCard(
   if (patch.links !== undefined) {
     sets.push("links_json = ?");
     params.push(JSON.stringify(patch.links));
+  }
+  if (patch.priority !== undefined) {
+    sets.push("priority = ?");
+    params.push(patch.priority);
+  }
+  if (patch.approvalFlag !== undefined) {
+    sets.push("approval_flag = ?");
+    params.push(patch.approvalFlag);
   }
   if (sets.length === 0) return;
   params.push(id);
@@ -185,6 +219,13 @@ export function setConnectionStatus(provider: string, status: string): void {
       "INSERT INTO connections (provider, status, updated_at) VALUES (?, ?, datetime('now')) ON CONFLICT(provider) DO UPDATE SET status=excluded.status, updated_at=datetime('now')"
     )
     .run(provider, status);
+}
+
+/** All connection rows, ordered. UI must use this, never inline SQL. */
+export function listConnections(): Connection[] {
+  return getDb()
+    .prepare("SELECT provider, status FROM connections ORDER BY provider")
+    .all() as unknown as Connection[];
 }
 
 export interface AgentConfig {

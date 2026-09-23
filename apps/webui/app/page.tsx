@@ -16,22 +16,14 @@ import { ChatPanel } from "@/features/chat/chat-panel";
 import { KanbanColumn } from "@/features/kanban/kanban-column";
 import { getProfile } from "@/lib/store";
 import type { CardType, ColumnId, KanbanCard } from "@/lib/foundercycle";
+import type { Card as CardRow } from "foundercycle/db/client";
 import { NEXT_COLUMN } from "@/lib/foundercycle";
 import { cn } from "cn";
-
-interface Row {
-  id: number;
-  title: string;
-  type: string;
-  status: string;
-  summary: string;
-  created_at: string;
-}
 
 const VALID_TYPES: CardType[] = ["meeting", "task", "bug", "idea", "follow-up"];
 const VALID_COLUMNS: ColumnId[] = ["planned", "ongoing", "completed"];
 
-function toCard(r: Row): KanbanCard {
+function toCard(r: CardRow): KanbanCard {
   return {
     id: String(r.id),
     title: r.title,
@@ -74,7 +66,7 @@ function Board() {
     { projectId: activeId ?? 0 },
     { enabled: ready && activeId !== null }
   );
-  const cards = ((cardsQuery.data ?? []) as Row[]).map(toCard);
+  const cards = ((cardsQuery.data ?? []) as CardRow[]).map(toCard);
 
   function invalidateCards() {
     utils.cards.listByProject.invalidate();

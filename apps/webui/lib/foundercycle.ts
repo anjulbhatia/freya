@@ -1,23 +1,22 @@
+import type { CardType, ColumnId, ProviderId } from "foundercycle/types";
+
+export type { CardType, ColumnId, ProviderId };
+
+/** UI labels for kernel provider ids. Labels live here, ids live in kernel. */
 export const PROVIDERS = [
   { id: "gmail", label: "Gmail" },
   { id: "calendar", label: "Google Calendar" },
   { id: "notion", label: "Notion" },
   { id: "slack", label: "Slack" },
   { id: "github", label: "GitHub" },
-] as const;
-
-export type ProviderId = (typeof PROVIDERS)[number]["id"];
+] as const satisfies readonly { id: ProviderId; label: string }[];
 
 /** Default board titles. Later user-configurable per board. */
 export const COLUMNS = [
   { id: "planned", label: "Tasks" },
   { id: "ongoing", label: "Running" },
   { id: "completed", label: "Done" },
-] as const;
-
-export type ColumnId = (typeof COLUMNS)[number]["id"];
-
-export type CardType = "meeting" | "task" | "bug" | "idea" | "follow-up";
+] as const satisfies readonly { id: ColumnId; label: string }[];
 
 export interface KanbanCard {
   id: string;

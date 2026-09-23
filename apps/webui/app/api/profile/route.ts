@@ -1,12 +1,8 @@
 import { NextResponse } from "next/server";
-import { getDb } from "foundercycle/db/client";
+import { getLatestProfile, saveProfile } from "foundercycle/db/client";
 
 export async function GET() {
-  const db = getDb();
-  const row = db.prepare("SELECT id, name, context FROM profiles ORDER BY id DESC LIMIT 1").get() as
-    | { id: number; name: string; context: string }
-    | undefined;
-  return NextResponse.json(row ?? null);
+  return NextResponse.json(getLatestProfile() ?? null);
 }
 
 export async function POST(req: Request) {
@@ -14,10 +10,6 @@ export async function POST(req: Request) {
   if (!body.name?.trim()) {
     return NextResponse.json({ error: "name required" }, { status: 400 });
   }
-  const db = getDb();
-  db.prepare("INSERT INTO profiles (name, context) VALUES (?, ?)").run(
-    body.name.trim(),
-    body.context ?? ""
-  );
-  return NextResponse.json({ ok: true });
+  const profile = saveProfile(body.name.trim(), body.context ?? "");
+  return NextResponse.json({ ok: true, id: profile.id });
 }

@@ -1,17 +1,11 @@
 import { z } from "zod";
-import { createCard, getDb } from "foundercycle/db/client";
+import { createCard, listCardsByProject, updateCard } from "foundercycle/db/client";
 import { columnId, cardType, publicProcedure, router } from "@/server/trpc";
 
 export const cardsRouter = router({
   listByProject: publicProcedure
     .input(z.object({ projectId: z.number().int().positive() }))
-    .query(({ input }) =>
-      getDb()
-        .prepare(
-          "SELECT id, title, type, status, priority, summary, links_json, approval_flag, created_at FROM cards WHERE project_id = ? ORDER BY priority DESC, id DESC"
-        )
-        .all(input.projectId)
-    ),
+    .query(({ input }) => listCardsByProject(input.projectId)),
   create: publicProcedure
     .input(
       z.object({
@@ -31,27 +25,18 @@ export const cardsRouter = router({
         type: cardType.optional(),
         status: columnId.optional(),
         summary: z.string().max(2000).optional(),
+        priority: z.number().int().optional(),
+        approvalFlag: z.number().int().min(0).max(1).optional(),
       })
     )
     .mutation(({ input }) => {
-      const sets: string[] = [];
-      const params: unknown[] = [];
-      if (input.type !== undefined) {
-        sets.push("type = ?");
-        params.push(input.type);
-      }
-      if (input.status !== undefined) {
-        sets.push("status = ?");
-        params.push(input.status);
-      }
-      if (input.summary !== undefined) {
-        sets.push("summary = ?");
-        params.push(input.summary);
-      }
-      if (sets.length > 0) {
-        params.push(input.id);
-        getDb().prepare(`UPDATE cards SET ${sets.join(", ")} WHERE id = ?`).run(...params);
-      }
+      updateCard(input.id, {
+        type: input.type,
+        status: input.status,
+        summary: input.summary,
+        priority: input.priority,
+        approvalFlag: input.approvalFlag,
+      });
       return { ok: true };
     }),
 });
