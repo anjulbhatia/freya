@@ -32,7 +32,7 @@ function toCard(r: CardRow): KanbanCard {
       ? (r.status as ColumnId)
       : "planned",
     summary: r.summary || undefined,
-    createdAt: r.created_at,
+    createdAt: r.createdAt,
   };
 }
 

@@ -4,7 +4,7 @@ import { getServiceStatus } from "foundercycle/integrations/registry";
 
 export async function GET() {
   const t0 = Date.now();
-  const statuses = getServiceStatus();
+  const statuses = await getServiceStatus();
   const measured = Date.now() - t0;
   const labels = new Map(PROVIDERS.map((p) => [p.id, p.label]));
   return NextResponse.json(

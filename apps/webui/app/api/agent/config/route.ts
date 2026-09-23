@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getAgentConfig, saveAgentConfig } from "foundercycle/db/client";
 
 export async function GET() {
-  return NextResponse.json(getAgentConfig());
+  return NextResponse.json(await getAgentConfig());
 }
 
 export async function POST(req: Request) {
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "bad approval_mode" }, { status: 400 });
   }
   return NextResponse.json(
-    saveAgentConfig({
+    await saveAgentConfig({
       model: body.model,
       approval_mode: body.approval_mode,
       review_threshold: body.review_threshold,

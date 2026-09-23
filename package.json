@@ -9,9 +9,8 @@
     "start": "bun run --filter webui start",
     "lint": "bun run --filter webui lint",
     "typecheck": "bun run --filter webui typecheck && bun run --filter foundercycle typecheck",
-    "db:up": "docker compose up -d db",
+    "db:generate": "bun run --filter foundercycle db:generate",
     "db:migrate": "bun run --filter foundercycle db:migrate",
-    "db:studio": "bun run --filter foundercycle db:studio"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.69",

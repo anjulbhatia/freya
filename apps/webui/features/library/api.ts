@@ -10,7 +10,7 @@ interface CardRow {
   id: number;
   title: string;
   type: string;
-  project_id: number;
+  projectId: number;
 }
 
 interface ProjectRow {
@@ -29,6 +29,6 @@ export async function fetchLibraryIdeas(): Promise<LibraryIdea[]> {
     .map((c) => ({
       id: c.id,
       title: c.title,
-      project: names.get(c.project_id) ?? "Unknown",
+      project: names.get(c.projectId) ?? "Unknown",
     }));
 }

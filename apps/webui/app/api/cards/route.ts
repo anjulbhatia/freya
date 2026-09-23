@@ -3,7 +3,7 @@ import { createCard, listCards, listCardsByProject, updateCard } from "foundercy
 
 export async function GET(req: Request) {
   const project = new URL(req.url).searchParams.get("project");
-  const rows = project ? listCardsByProject(Number(project)) : listCards();
+  const rows = project ? await listCardsByProject(Number(project)) : await listCards();
   return NextResponse.json(rows);
 }
 
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
   if (!body.title?.trim()) {
     return NextResponse.json({ error: "title required" }, { status: 400 });
   }
-  const id = createCard(
+  const id = await createCard(
     body.title.trim(),
     body.type ?? "task",
     body.status ?? "planned",
@@ -38,7 +38,7 @@ export async function PATCH(req: Request) {
   if (!body.id) {
     return NextResponse.json({ error: "id required" }, { status: 400 });
   }
-  updateCard(body.id, {
+  await updateCard(body.id, {
     type: body.type,
     status: body.status,
     summary: body.summary,

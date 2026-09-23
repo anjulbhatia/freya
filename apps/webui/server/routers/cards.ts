@@ -15,8 +15,8 @@ export const cardsRouter = router({
         projectId: z.number().int().positive().default(1),
       })
     )
-    .mutation(({ input }) => ({
-      id: createCard(input.title, input.type, input.status, input.projectId),
+    .mutation(async ({ input }) => ({
+      id: await createCard(input.title, input.type, input.status, input.projectId),
     })),
   update: publicProcedure
     .input(
@@ -29,8 +29,8 @@ export const cardsRouter = router({
         approvalFlag: z.number().int().min(0).max(1).optional(),
       })
     )
-    .mutation(({ input }) => {
-      updateCard(input.id, {
+    .mutation(async ({ input }) => {
+      await updateCard(input.id, {
         type: input.type,
         status: input.status,
         summary: input.summary,

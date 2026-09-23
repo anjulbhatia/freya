@@ -6,6 +6,7 @@
 export * from "./types";
 export * from "./schemas";
 export * from "./db/client";
+export { getDatabaseUrl, getStore, setStore } from "./db/index";
 export * from "./agent/classify";
 export * from "./agent/flows";
 export * from "./agent/run";

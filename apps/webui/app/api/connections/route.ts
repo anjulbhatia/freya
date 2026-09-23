@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { listConnections, setConnectionStatus } from "foundercycle/db/client";
 
 export async function GET() {
-  return NextResponse.json(listConnections());
+  return NextResponse.json(await listConnections());
 }
 
 export async function POST(req: Request) {
@@ -10,6 +10,6 @@ export async function POST(req: Request) {
   if (!body.provider) {
     return NextResponse.json({ error: "provider required" }, { status: 400 });
   }
-  setConnectionStatus(body.provider, body.status ?? "connected");
+  await setConnectionStatus(body.provider, body.status ?? "connected");
   return NextResponse.json({ ok: true });
 }
