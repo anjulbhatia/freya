@@ -13,12 +13,12 @@ export async function fetchWebmcpStatus(): Promise<ServiceStatus[]> {
     if (!res.ok) throw new Error("bad status");
     return (await res.json()) as ServiceStatus[];
   } catch {
-    // fallback mock: all up, used before API ready
+    // API unreachable: report unknown/offline, never fake all-live.
     return PROVIDERS.map((p) => ({
       provider: p.id,
       label: p.label,
-      ok: true,
-      latencyMs: Math.round(40 + Math.random() * 120),
+      ok: false,
+      latencyMs: 0,
     }));
   }
 }
