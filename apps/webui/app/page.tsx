@@ -1,9 +1,10 @@
 "use client";
 
 import { Suspense, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { trpc } from "@/lib/trpc";
+import { useProfileGate } from "@/lib/route-guard";
+import { useLiveStatus } from "@/lib/use-live-status";
 import { Sidebar } from "@/features/navigation/sidebar";
 import { LibraryModal } from "@/features/library";
 import { ConnectModal } from "@/features/settings/connect-modal";
@@ -12,10 +13,10 @@ import { SettingsModal } from "@/features/settings/settings-modal";
 import { ProfileModal } from "@/features/profile";
 import type { Project } from "@/features/projects/api";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { PanelRightIcon } from "@hugeicons/core-free-icons";
+import { Activity03Icon, PanelRightIcon } from "@hugeicons/core-free-icons";
+import { Button } from "@/components/ui/button";
 import { ChatPanel } from "@/features/chat/chat-panel";
 import { KanbanColumn } from "@/features/kanban/kanban-column";
-import { getProfile } from "@/lib/store";
 import type { CardType, ColumnId, KanbanCard } from "@/lib/foundercycle";
 import type { Card as CardRow } from "foundercycle/db/client";
 import { NEXT_COLUMN } from "@/lib/foundercycle";
@@ -46,9 +47,8 @@ export default function Home() {
 }
 
 function Board() {
-  const router = useRouter();
-  const [name, setName] = useState("");
-  const [ready, setReady] = useState(false);
+  const { ready, founderName, setFounderName } = useProfileGate();
+  const { connections, setConnections, liveLabel, refreshLiveStatus } = useLiveStatus();
   const [activeId, setActiveId] = useQueryState("project", parseAsInteger);
   const [query, setQuery] = useQueryState("q", { defaultValue: "" });
   const [collapsed, setCollapsed] = useState(false);
@@ -58,8 +58,6 @@ function Board() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [libraryOpen, setLibraryOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-  const [connections, setConnections] = useState<Record<string, boolean>>({});
-  const [liveLabel, setLiveLabel] = useState("");
 
   const utils = trpc.useUtils();
   const projectsQuery = trpc.projects.list.useQuery(undefined, { enabled: ready });
@@ -84,33 +82,6 @@ function Board() {
   };
 
   useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const p = (await fetch("/api/profile", { cache: "no-store" }).then((r) =>
-          r.json()
-        )) as { name?: string } | null;
-        if (!cancelled && p?.name) {
-          setName(p.name);
-          setReady(true);
-          return;
-        }
-      } catch {}
-      const local = getProfile();
-      if (!cancelled) {
-        if (!local) router.push("/onboarding");
-        else {
-          setName(local.name);
-          setReady(true);
-        }
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [router]);
-
-  useEffect(() => {
     if (ready) reload();
   }, [ready]);
 
@@ -131,22 +102,8 @@ function Board() {
 
   useEffect(() => {
     if (!ready) return;
-    fetch("/api/connections")
-      .then((r) => r.json())
-      .then((rows: { provider: string; status: string }[]) => {
-        const map: Record<string, boolean> = {};
-        for (const r of rows) map[r.provider] = r.status === "connected";
-        setConnections(map);
-      })
-      .catch(() => {});
-    fetch("/api/webmcp")
-      .then((r) => r.json())
-      .then((payload: { ok: boolean }[] | { services?: { ok: boolean }[] }) => {
-        const ss = Array.isArray(payload) ? payload : (payload.services ?? []);
-        setLiveLabel(`${ss.filter((s) => s.ok).length}/${ss.length} live`);
-      })
-      .catch(() => {});
-  }, [ready]);
+    refreshLiveStatus();
+  }, [ready, refreshLiveStatus]);
 
   const createCardMut = trpc.cards.create.useMutation({
     onSuccess: () => invalidateCards(),
@@ -206,7 +163,21 @@ function Board() {
     archiveProjectMut.mutate({ id });
   }
 
-  if (!ready) return null;
+  // Health stays visible before the profile gate resolves: if the API
+  // or DB is down, the status panel is how you find out instead of
+  // bouncing to onboarding blind.
+  if (!ready) {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center gap-3 bg-background">
+        <div className="text-lg tracking-tight">freya</div>
+        <Button variant="outline" size="sm" onClick={() => setHealthOpen(true)}>
+          <HugeiconsIcon icon={Activity03Icon} strokeWidth={2} />
+          System status
+        </Button>
+        <HealthModal open={healthOpen} onOpenChange={setHealthOpen} />
+      </div>
+    );
+  }
 
   const planned = cards.filter((c) => c.column === "planned");
   const ongoing = cards.filter((c) => c.column === "ongoing");
@@ -233,7 +204,7 @@ function Board() {
         onOpenProfile={() => setProfileOpen(true)}
         inboxItems={planned.map((c) => ({ id: c.id, title: c.title }))}
         onAdvanceCard={handleAdvance}
-        founderName={name}
+        founderName={founderName}
         webmcpLabel={liveLabel}
       />
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
@@ -366,13 +337,7 @@ function Board() {
         connections={connections}
         onSave={(c) => {
           setConnections(c);
-          fetch("/api/webmcp")
-            .then((r) => r.json())
-            .then((payload: { ok: boolean }[] | { services?: { ok: boolean }[] }) => {
-              const ss = Array.isArray(payload) ? payload : (payload.services ?? []);
-              setLiveLabel(`${ss.filter((s) => s.ok).length}/${ss.length} live`);
-            })
-            .catch(() => {});
+          refreshLiveStatus();
         }}
       />
       <SettingsModal
@@ -383,8 +348,9 @@ function Board() {
       <ProfileModal
         open={profileOpen}
         onOpenChange={setProfileOpen}
-        onProfileSaved={(n) => setName(n)}
+        onProfileSaved={(n) => setFounderName(n)}
       />
+      <HealthModal open={healthOpen} onOpenChange={setHealthOpen} />
       <LibraryModal open={libraryOpen} onOpenChange={setLibraryOpen} />
     </div>
   );
