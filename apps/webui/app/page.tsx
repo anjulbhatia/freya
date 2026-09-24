@@ -139,7 +139,8 @@ function Board() {
       .catch(() => {});
     fetch("/api/webmcp")
       .then((r) => r.json())
-      .then((ss: { ok: boolean }[]) => {
+      .then((payload: { ok: boolean }[] | { services?: { ok: boolean }[] }) => {
+        const ss = Array.isArray(payload) ? payload : (payload.services ?? []);
         setLiveLabel(`${ss.filter((s) => s.ok).length}/${ss.length} live`);
       })
       .catch(() => {});
@@ -364,7 +365,8 @@ function Board() {
           setConnections(c);
           fetch("/api/webmcp")
             .then((r) => r.json())
-            .then((ss: { ok: boolean }[]) => {
+            .then((payload: { ok: boolean }[] | { services?: { ok: boolean }[] }) => {
+              const ss = Array.isArray(payload) ? payload : (payload.services ?? []);
               setLiveLabel(`${ss.filter((s) => s.ok).length}/${ss.length} live`);
             })
             .catch(() => {});
