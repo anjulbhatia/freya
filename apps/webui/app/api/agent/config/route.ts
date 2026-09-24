@@ -1,28 +1,21 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { getAgentConfig, saveAgentConfig } from "foundercycle/db/client";
+
+const bodySchema = z.object({
+  model: z.string().trim().min(1).max(80).optional(),
+  approval_mode: z.enum(["manual", "auto"]).optional(),
+  review_threshold: z.number().finite().min(0).max(1).optional(),
+});
 
 export async function GET() {
   return NextResponse.json(await getAgentConfig());
 }
 
 export async function POST(req: Request) {
-  const body = (await req.json()) as {
-    model?: string;
-    approval_mode?: "manual" | "auto";
-    review_threshold?: number;
-  };
-  if (
-    body.approval_mode !== undefined &&
-    body.approval_mode !== "manual" &&
-    body.approval_mode !== "auto"
-  ) {
-    return NextResponse.json({ error: "bad approval_mode" }, { status: 400 });
+  const parsed = bodySchema.safeParse(await req.json().catch(() => ({})));
+  if (!parsed.success) {
+    return NextResponse.json({ error: "invalid config payload" }, { status: 400 });
   }
-  return NextResponse.json(
-    await saveAgentConfig({
-      model: body.model,
-      approval_mode: body.approval_mode,
-      review_threshold: body.review_threshold,
-    })
-  );
+  return NextResponse.json(await saveAgentConfig(parsed.data));
 }
