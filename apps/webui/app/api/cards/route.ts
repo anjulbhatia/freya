@@ -1,43 +1,53 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { createCard, listCards, listCardsByProject, updateCard } from "foundercycle/db/client";
+import { cardTypeSchema, columnIdSchema } from "foundercycle/schemas";
+
+const createSchema = z.object({
+  title: z.string().trim().min(1).max(2000),
+  type: cardTypeSchema.default("task"),
+  status: columnIdSchema.default("planned"),
+  project_id: z.number().int().positive().default(1),
+});
+
+const patchSchema = z.object({
+  id: z.number().int().positive(),
+  type: cardTypeSchema.optional(),
+  status: columnIdSchema.optional(),
+  summary: z.string().max(2000).optional(),
+  priority: z.number().int().optional(),
+  approval_flag: z.number().int().min(0).max(1).optional(),
+});
 
 export async function GET(req: Request) {
-  const project = new URL(req.url).searchParams.get("project");
-  const rows = project ? await listCardsByProject(Number(project)) : await listCards();
+  const raw = new URL(req.url).searchParams.get("project");
+  if (raw !== null) {
+    const parsed = z.coerce.number().int().positive().safeParse(raw);
+    if (!parsed.success) {
+      return NextResponse.json({ error: "invalid project id" }, { status: 400 });
+    }
+    return NextResponse.json(await listCardsByProject(parsed.data));
+  }
+  const rows = await listCards();
   return NextResponse.json(rows);
 }
 
 export async function POST(req: Request) {
-  const body = (await req.json()) as {
-    title?: string;
-    type?: string;
-    status?: string;
-    project_id?: number;
-  };
-  if (!body.title?.trim()) {
-    return NextResponse.json({ error: "title required" }, { status: 400 });
+  const parsed = createSchema.safeParse(await req.json().catch(() => ({})));
+  if (!parsed.success) {
+    return NextResponse.json({ error: "invalid card payload" }, { status: 400 });
   }
-  const id = await createCard(
-    body.title.trim(),
-    body.type ?? "task",
-    body.status ?? "planned",
-    body.project_id ?? 1
-  );
+  const body = parsed.data;
+  const id = await createCard(body.title, body.type, body.status, body.project_id);
   return NextResponse.json({ ok: true, id });
 }
 
 export async function PATCH(req: Request) {
-  const body = (await req.json()) as {
-    id?: number;
-    type?: string;
-    status?: string;
-    summary?: string;
-    priority?: number;
-    approval_flag?: number;
-  };
-  if (!body.id) {
-    return NextResponse.json({ error: "id required" }, { status: 400 });
+  const parsed = patchSchema.safeParse(await req.json().catch(() => ({})));
+  if (!parsed.success) {
+    return NextResponse.json({ error: "invalid card patch" }, { status: 400 });
   }
+  const body = parsed.data;
   await updateCard(body.id, {
     type: body.type,
     status: body.status,
