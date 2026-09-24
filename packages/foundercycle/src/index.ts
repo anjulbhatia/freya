@@ -14,3 +14,4 @@ export * from "./agent/prompts";
 export * from "./integrations/types";
 export * from "./integrations/registry";
 export * from "./webmcp/tools";
+export * from "./webmcp/health";

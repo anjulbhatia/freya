@@ -7,6 +7,7 @@ import { trpc } from "@/lib/trpc";
 import { Sidebar } from "@/features/navigation/sidebar";
 import { LibraryModal } from "@/features/library";
 import { ConnectModal } from "@/features/settings/connect-modal";
+import { HealthModal } from "@/features/health/health-modal";
 import { SettingsModal } from "@/features/settings/settings-modal";
 import { ProfileModal } from "@/features/profile";
 import type { Project } from "@/features/projects/api";
@@ -53,6 +54,7 @@ function Board() {
   const [collapsed, setCollapsed] = useState(false);
   const [boardHidden, setBoardHidden] = useState(false);
   const [connectOpen, setConnectOpen] = useState(false);
+  const [healthOpen, setHealthOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [libraryOpen, setLibraryOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -227,6 +229,7 @@ function Board() {
         onOpenAutomations={() => setSettingsOpen(true)}
         onOpenLibrary={() => setLibraryOpen(true)}
         onOpenConnectors={() => setConnectOpen(true)}
+        onOpenHealth={() => setHealthOpen(true)}
         onOpenProfile={() => setProfileOpen(true)}
         inboxItems={planned.map((c) => ({ id: c.id, title: c.title }))}
         onAdvanceCard={handleAdvance}
@@ -376,6 +379,7 @@ function Board() {
         open={settingsOpen}
         onOpenChange={setSettingsOpen}
       />
+      <HealthModal open={healthOpen} onOpenChange={setHealthOpen} />
       <ProfileModal
         open={profileOpen}
         onOpenChange={setProfileOpen}

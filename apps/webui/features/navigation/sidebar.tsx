@@ -3,6 +3,7 @@
 import { useState, type ReactElement } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
+  Activity03Icon,
   ArrowDown01Icon,
   FoldersIcon,
   InboxIcon,
@@ -55,6 +56,7 @@ interface Props {
   onOpenAutomations: () => void;
   onOpenLibrary: () => void;
   onOpenConnectors: () => void;
+  onOpenHealth: () => void;
   onOpenProfile: () => void;
   inboxItems: InboxItem[];
   onAdvanceCard: (id: string) => void;
@@ -88,6 +90,7 @@ export function Sidebar({
   onOpenAutomations,
   onOpenLibrary,
   onOpenConnectors,
+  onOpenHealth,
   onOpenProfile,
   inboxItems,
   onAdvanceCard,
@@ -260,6 +263,12 @@ export function Sidebar({
               <span className="ml-auto text-[10px] text-muted-foreground">{webmcpLabel}</span>
             </>
           )}
+        </button>
+      </Tip>
+      <Tip label="Status">
+        <button className={cn(navItem, collapsed && "justify-center px-0")} onClick={onOpenHealth}>
+          <HugeiconsIcon icon={Activity03Icon} strokeWidth={2} className="size-4 shrink-0" />
+          {!collapsed && "Status"}
         </button>
       </Tip>
 
