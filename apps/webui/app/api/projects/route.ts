@@ -19,15 +19,26 @@ export async function POST(req: Request) {
 }
 
 export async function PATCH(req: Request) {
-  const body = (await req.json()) as {
+  const body = (await req.json().catch(() => ({}))) as {
     id?: number;
     name?: string;
     archived?: boolean;
   };
-  if (!body.id) {
+  if (!Number.isInteger(body.id) || (body.id as number) <= 0) {
     return NextResponse.json({ error: "id required" }, { status: 400 });
   }
-  if (body.name !== undefined) await renameProject(body.id, body.name);
-  if (body.archived !== undefined) await archiveProject(body.id, body.archived);
+  if (body.name !== undefined) {
+    const name = body.name.trim();
+    if (name.length < 1 || name.length > 120) {
+      return NextResponse.json({ error: "invalid name" }, { status: 400 });
+    }
+    await renameProject(body.id as number, name);
+  }
+  if (body.archived !== undefined) {
+    if (typeof body.archived !== "boolean") {
+      return NextResponse.json({ error: "invalid archived flag" }, { status: 400 });
+    }
+    await archiveProject(body.id as number, body.archived);
+  }
   return NextResponse.json({ ok: true });
 }
