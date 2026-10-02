@@ -1,4 +1,4 @@
-import { PROVIDERS } from "@/lib/foundercycle";
+import { PROVIDERS } from "@/lib/freya";
 
 export interface ServiceStatus {
   provider: string;

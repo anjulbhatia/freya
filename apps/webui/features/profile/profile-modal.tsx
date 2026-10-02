@@ -52,7 +52,7 @@ export function ProfileModal({ open, onOpenChange, onProfileSaved }: Props) {
         <DialogHeader>
           <DialogTitle>Profile</DialogTitle>
           <DialogDescription>
-            Who the agent is working for. Stored in ~/.foundercycle.
+            Who the agent is working for. Stored in ~/.freya.
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-3">

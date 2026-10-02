@@ -15,7 +15,7 @@ import {
   PIPELINES,
   STAGE_INDEX,
   type KanbanCard as CardData,
-} from "@/lib/foundercycle";
+} from "@/lib/freya";
 import { cn } from "cn";
 
 const TYPE_PILL: Record<CardData["type"], string> = {

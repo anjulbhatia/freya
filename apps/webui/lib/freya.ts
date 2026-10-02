@@ -1,4 +1,4 @@
-import type { CardType, ColumnId, ProviderId } from "foundercycle/types";
+import type { CardType, ColumnId, ProviderId } from "freya/types";
 
 export type { CardType, ColumnId, ProviderId };
 

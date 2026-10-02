@@ -9,9 +9,9 @@ import { nowIso, type AgentConfig, type Card, type CardPatch, type Store } from 
 
 function migrationsDir(): string | undefined {
   const candidates = [
-    join(process.cwd(), "packages", "foundercycle", "drizzle", "pg"),
-    join(process.cwd(), "..", "packages", "foundercycle", "drizzle", "pg"),
-    join(process.cwd(), "..", "..", "packages", "foundercycle", "drizzle", "pg"),
+    join(process.cwd(), "packages", "freya", "drizzle", "pg"),
+    join(process.cwd(), "..", "packages", "freya", "drizzle", "pg"),
+    join(process.cwd(), "..", "..", "packages", "freya", "drizzle", "pg"),
   ];
   return candidates.find((c) => existsSync(c));
 }

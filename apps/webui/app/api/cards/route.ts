@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { createCard, listCards, listCardsByProject, updateCard } from "foundercycle/db/client";
-import { cardTypeSchema, columnIdSchema } from "foundercycle/schemas";
+import { createCard, listCards, listCardsByProject, updateCard } from "freya/db/client";
+import { cardTypeSchema, columnIdSchema } from "freya/schemas";
 
 const createSchema = z.object({
   title: z.string().trim().min(1).max(2000),

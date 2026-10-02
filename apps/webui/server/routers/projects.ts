@@ -4,7 +4,7 @@ import {
   createProject,
   listProjects,
   renameProject,
-} from "foundercycle/db/client";
+} from "freya/db/client";
 import { publicProcedure, router } from "@/server/trpc";
 
 export const projectsRouter = router({

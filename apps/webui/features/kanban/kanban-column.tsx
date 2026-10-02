@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { KanbanCard } from "@/features/kanban/kanban-card";
-import type { KanbanCard as CardData, ColumnId } from "@/lib/foundercycle";
+import type { KanbanCard as CardData, ColumnId } from "@/lib/freya";
 import { cn } from "cn";
 
 interface Props {

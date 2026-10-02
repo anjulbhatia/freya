@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
 import { ProviderIcon } from "@/lib/app-icons";
-import type { ProviderId } from "@/lib/foundercycle";
+import type { ProviderId } from "@/lib/freya";
 import { trpc } from "@/lib/trpc";
 import { cn } from "cn";
 

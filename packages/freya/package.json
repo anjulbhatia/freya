@@ -1,8 +1,8 @@
 {
-  "name": "foundercycle",
+  "name": "freya",
   "version": "0.1.0",
   "private": true,
-  "description": "FounderCycle agent kernel: classifier, flows, integrations, store. UI-agnostic.",
+  "description": "Freya agent kernel: classifier, flows, integrations, store. UI-agnostic.",
   "type": "module",
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json",

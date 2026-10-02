@@ -1,11 +1,11 @@
 import { initTRPC } from "@trpc/server";
-import { cardTypeSchema, columnIdSchema } from "foundercycle/schemas";
+import { cardTypeSchema, columnIdSchema } from "freya/schemas";
 
 const t = initTRPC.create();
 
 export const router = t.router;
 export const publicProcedure = t.procedure;
 
-/** Canonical domain enums. Single source: foundercycle kernel. */
+/** Canonical domain enums. Single source: freya kernel. */
 export const cardType = cardTypeSchema;
 export const columnId = columnIdSchema;

@@ -1,5 +1,5 @@
 /**
- * WebMCP tool library for Freya / FounderCycle.
+ * WebMCP tool library for Freya.
  *
  * One canonical table of every operation the agent and external callers
  * may perform: kanban, projects, agent loop, all five integrations,

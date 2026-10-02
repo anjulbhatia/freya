@@ -63,7 +63,7 @@ export function SettingsModal({ open, onOpenChange }: Props) {
         <DialogHeader>
           <DialogTitle>Automations</DialogTitle>
           <DialogDescription>
-            Agent behavior. Stored in ~/.foundercycle.
+            Agent behavior. Stored in ~/.freya.
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-4">

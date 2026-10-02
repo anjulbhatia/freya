@@ -3,7 +3,7 @@ import type { Store } from "./store";
 
 /**
  * Postgres is the only backend. DATABASE_URL is required, e.g.
- * postgresql://foundercycle:foundercycle@localhost:5432/foundercycle
+ * postgresql://freya:freya@localhost:5432/freya
  */
 export function getDatabaseUrl(): string {
   const url = process.env.DATABASE_URL;

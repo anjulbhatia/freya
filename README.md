@@ -1,4 +1,4 @@
-# FounderCycle
+# Freya
 
 A personal operating agent that turns one Kanban card into the correct actions across Gmail, Calendar, Notion, GitHub, and Slack.
 
@@ -90,7 +90,7 @@ Card example: “Idea: usage-based pricing experiment”
 - Mobile app
 
 ## Prompt Skeleton
-You are FounderCycle, a personal operating agent for a founder.
+You are Freya, a personal operating agent for a founder.
 Your only job is to turn one Kanban card into the correct real-world actions.
 Work in small, verifiable steps. Use tools. Update the card when finished.
 Prefer action over discussion.

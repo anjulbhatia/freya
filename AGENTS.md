@@ -1,4 +1,4 @@
-# FounderCycle / Freya
+# Freya
 > A personal operating agent that turns one Kanban card into the correct actions across Gmail, Calendar, Notion, GitHub, and Slack.
 
 Opinionated personal + small-team operating agent.
@@ -146,7 +146,7 @@ Input: “Fix the bug on PR #3122”
 10. Record clean demo of the two flows
 
 ## Prompt Skeleton (agent)
-You are the operating agent for a FounderCycle project.
+You are the operating agent for a Freya project.
 Your job is to turn a card or message into the correct real-world actions across the connected tools.
 Work in small, verifiable steps.
 Always propose first. Never perform irreversible actions without approval.

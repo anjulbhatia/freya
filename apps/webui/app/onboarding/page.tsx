@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { ProviderIcon } from "@/lib/app-icons";
-import { PROVIDERS } from "@/lib/foundercycle";
+import { PROVIDERS } from "@/lib/freya";
 import { saveProfile, saveConnections } from "@/lib/store";
 
 export default function OnboardingPage() {
@@ -70,7 +70,7 @@ export default function OnboardingPage() {
           <CardTitle>{step === 1 ? "Founder setup" : "Connect apps"}</CardTitle>
           <CardDescription>
             {step === 1
-              ? "Stored locally in ~/.foundercycle."
+              ? "Stored locally in ~/.freya."
               : `${live} of ${PROVIDERS.length} connected`}
           </CardDescription>
         </CardHeader>
@@ -126,7 +126,7 @@ export default function OnboardingPage() {
                   Back
                 </Button>
                 <Button className="flex-1" onClick={finish} disabled={saving}>
-                  {saving ? "Saving…" : "Enter FounderCycle"}
+                  {saving ? "Saving…" : "Enter Freya"}
                 </Button>
               </div>
             </>

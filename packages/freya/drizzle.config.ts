@@ -7,6 +7,6 @@ export default defineConfig({
   dbCredentials: {
     url:
       process.env.DATABASE_URL ??
-      "postgresql://foundercycle:foundercycle@localhost:5432/foundercycle",
+      "postgresql://freya:freya@localhost:5432/freya",
   },
 });

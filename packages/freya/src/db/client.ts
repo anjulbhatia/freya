@@ -1,6 +1,6 @@
 /**
- * Back-compat facade. New code should import from `foundercycle/db/index`
- * (getStore) or `foundercycle/db/store` (types) directly.
+ * Back-compat facade. New code should import from `freya/db/index`
+ * (getStore) or `freya/db/store` (types) directly.
  * All functions are async.
  */
 import { getStore } from "./index";

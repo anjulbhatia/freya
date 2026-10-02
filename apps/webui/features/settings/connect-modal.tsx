@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { ProviderIcon } from "@/lib/app-icons";
-import { PROVIDERS } from "@/lib/foundercycle";
+import { PROVIDERS } from "@/lib/freya";
 import { saveConnections } from "@/lib/store";
 
 const BLURB: Record<string, string> = {

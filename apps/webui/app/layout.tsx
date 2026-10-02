@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FounderCycle",
+  title: "Freya",
   description: "One card in, the right actions out.",
 };
 

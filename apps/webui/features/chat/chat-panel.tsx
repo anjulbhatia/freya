@@ -64,7 +64,7 @@ import {
   type KanbanCard,
   type CardType,
   type ProviderId,
-} from "@/lib/foundercycle";
+} from "@/lib/freya";
 import { getConnections } from "@/lib/store";
 
 interface Props {
@@ -214,7 +214,7 @@ export function ChatPanel({ onCreate }: Props) {
                       </div>
                       <EmptyTitle>Capture anything</EmptyTitle>
                       <EmptyDescription>
-                        Type work like you think it. FounderCycle classifies
+                        Type work like you think it. Freya classifies
                         and queues it as a card.
                       </EmptyDescription>
                     </EmptyHeader>
@@ -268,7 +268,7 @@ export function ChatPanel({ onCreate }: Props) {
                           <HugeiconsIcon icon={BotIcon} strokeWidth={2} className="size-4" />
                         </MessageAvatar>
                         <MessageContent>
-                          <MessageHeader>FounderCycle</MessageHeader>
+                          <MessageHeader>Freya</MessageHeader>
                           <div className="px-2.5 text-xs leading-relaxed">
                             {m.text}
                           </div>

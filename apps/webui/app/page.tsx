@@ -17,9 +17,9 @@ import { Activity03Icon, PanelRightIcon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { ChatPanel } from "@/features/chat/chat-panel";
 import { KanbanColumn } from "@/features/kanban/kanban-column";
-import type { CardType, ColumnId, KanbanCard } from "@/lib/foundercycle";
-import type { Card as CardRow } from "foundercycle/db/client";
-import { NEXT_COLUMN } from "@/lib/foundercycle";
+import type { CardType, ColumnId, KanbanCard } from "@/lib/freya";
+import type { Card as CardRow } from "freya/db/client";
+import { NEXT_COLUMN } from "@/lib/freya";
 import { cn } from "cn";
 
 const VALID_TYPES: CardType[] = ["meeting", "task", "bug", "idea", "follow-up"];
@@ -210,7 +210,7 @@ function Board() {
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
         <div className="flex h-12 flex-none items-center px-4">
           <div className="truncate text-sm font-semibold">
-            {active ? active.name : "FounderCycle"}
+            {active ? active.name : "Freya"}
           </div>
         </div>
       <main ref={mainRef} className="flex min-h-0 flex-1 gap-0 overflow-hidden px-3 pb-3">

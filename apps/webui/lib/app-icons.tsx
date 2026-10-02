@@ -6,7 +6,7 @@ import Notion from "@thesvg/react/notion";
 import Slack from "@thesvg/react/slack";
 import Github from "@thesvg/react/github";
 import { cn } from "cn";
-import type { ProviderId } from "@/lib/foundercycle";
+import type { ProviderId } from "@/lib/freya";
 
 const MAP = {
   gmail: Gmail,

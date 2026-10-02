@@ -1,5 +1,5 @@
 {
-  "name": "foundercycle",
+  "name": "freya",
   "version": "0.1.0",
   "private": true,
   "workspaces": ["apps/*", "packages/*"],
@@ -8,9 +8,9 @@
     "build": "bun run --filter webui build",
     "start": "bun run --filter webui start",
     "lint": "bun run --filter webui lint",
-    "typecheck": "bun run --filter webui typecheck && bun run --filter foundercycle typecheck",
-    "db:generate": "bun run --filter foundercycle db:generate",
-    "db:migrate": "bun run --filter foundercycle db:migrate",
+    "typecheck": "bun run --filter webui typecheck && bun run --filter freya typecheck",
+    "db:generate": "bun run --filter freya db:generate",
+    "db:migrate": "bun run --filter freya db:migrate"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.69",
@@ -42,7 +42,7 @@
     "media-chrome": "^4.19.2",
     "motion": "^13.2.0",
     "nanoid": "^6.0.1",
-    "next": "16.3.5",
+    "next": "^16.3.6",
     "nuqs": "^2.10.1",
     "react": "19.2.8",
     "react-day-picker": "^10.0.1",

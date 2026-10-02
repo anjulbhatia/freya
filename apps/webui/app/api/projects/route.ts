@@ -4,7 +4,7 @@ import {
   createProject,
   listProjects,
   renameProject,
-} from "foundercycle/db/client";
+} from "freya/db/client";
 
 export async function GET() {
   return NextResponse.json(await listProjects());

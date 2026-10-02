@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { listConnections, setConnectionStatus } from "foundercycle/db/client";
-import { providerIdSchema } from "foundercycle/schemas";
+import { listConnections, setConnectionStatus } from "freya/db/client";
+import { providerIdSchema } from "freya/schemas";
 
 const bodySchema = z.object({
   provider: providerIdSchema,

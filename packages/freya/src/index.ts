@@ -1,6 +1,6 @@
 /**
- * FounderCycle kernel public API.
- * UI may import from `foundercycle/*` subpaths or this barrel.
+ * Freya kernel public API.
+ * UI may import from `freya/*` subpaths or this barrel.
  * Import direction is one-way: webui -> kernel. Kernel never imports webui.
  */
 export * from "./types";

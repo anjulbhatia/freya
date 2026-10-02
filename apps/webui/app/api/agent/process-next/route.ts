@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { processNext } from "foundercycle/agent/run";
+import { processNext } from "freya/agent/run";
 
 const bodySchema = z.object({
   approved: z.boolean().default(false),

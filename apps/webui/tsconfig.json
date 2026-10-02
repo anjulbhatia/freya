@@ -20,7 +20,7 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "foundercycle/*": ["../../packages/foundercycle/src/*"]
+      "freya/*": ["../../packages/freya/src/*"]
     }
   },
   "include": [
