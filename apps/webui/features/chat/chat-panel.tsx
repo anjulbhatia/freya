@@ -205,7 +205,7 @@ export function ChatPanel({ onCreate }: Props) {
                           <span
                             key={id}
                             title={PROVIDERS.find((p) => p.id === id)?.label ?? id}
-                            className="flex size-9 items-center justify-center rounded-full border bg-card shadow-xs"
+                            className="flex size-9 items-center justify-center rounded-full bg-surface-raised shadow-(--surface-shadow) ring-1 ring-surface-border"
                             style={{ marginLeft: i === 0 ? 0 : -8, zIndex: connected.length - i }}
                           >
                             <ProviderIcon provider={id} className="size-5" />
@@ -231,7 +231,7 @@ export function ChatPanel({ onCreate }: Props) {
                         </Button>
                       ))}
                     </div>
-                    <p className="text-[11px] text-muted-foreground">
+                    <p className="text-micro text-muted-foreground">
                       Try: “Call Sam on Wednesday about the pilot”
                     </p>
                   </Empty>
@@ -269,7 +269,7 @@ export function ChatPanel({ onCreate }: Props) {
                         </MessageAvatar>
                         <MessageContent>
                           <MessageHeader>Freya</MessageHeader>
-                          <div className="px-2.5 text-xs leading-relaxed">
+                          <div className="px-2.5 text-body leading-relaxed">
                             {m.text}
                           </div>
                           <MessageFooter className="gap-1.5 px-0">
@@ -310,7 +310,7 @@ export function ChatPanel({ onCreate }: Props) {
                         <HugeiconsIcon icon={BotIcon} strokeWidth={2} className="size-4" />
                       </MessageAvatar>
                       <MessageContent>
-                        <div className="flex items-center gap-2 px-2.5 py-1 text-xs text-muted-foreground">
+                        <div className="flex items-center gap-2 px-2.5 py-1 text-caption text-muted-foreground">
                           <Spinner />
                           Classifying…
                         </div>
@@ -344,7 +344,7 @@ export function ChatPanel({ onCreate }: Props) {
         </div>
       )}
 
-      <div className="rounded-2xl border border-input bg-card shadow-sm transition-all focus-within:border-primary/50 focus-within:shadow-md focus-within:ring-2 focus-within:ring-primary/20">
+      <div className="rounded-2xl bg-surface-raised shadow-(--surface-shadow) ring-1 ring-surface-border transition-all focus-within:shadow-(--floating-shadow) focus-within:ring-2 focus-within:ring-primary/20">
         {staged.length > 0 && (
           <>
             <div className="flex flex-wrap gap-1.5 px-3 pt-3">

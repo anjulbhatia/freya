@@ -15,6 +15,7 @@ import type { Project } from "@/features/projects/api";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Activity03Icon, PanelRightIcon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
+import { PageHeader, CollectionPage } from "@/components/ui/page-header";
 import { ChatPanel } from "@/features/chat/chat-panel";
 import { KanbanColumn } from "@/features/kanban/kanban-column";
 import type { CardType, ColumnId, KanbanCard } from "@/lib/freya";
@@ -208,22 +209,21 @@ function Board() {
         webmcpLabel={liveLabel}
       />
       <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-        <div className="flex h-12 flex-none items-center px-4">
-          <div className="truncate text-sm font-semibold">
-            {active ? active.name : "Freya"}
-          </div>
-        </div>
+        <PageHeader
+          title={active ? active.name : "Freya"}
+          meta={`${planned.length + ongoing.length} open · ${completed.length} done · ${liveLabel}`}
+        />
       <main ref={mainRef} className="flex min-h-0 flex-1 gap-0 overflow-hidden px-3 pb-3">
         <section
           style={boardHidden ? undefined : { width: `${chatPct}%` }}
           className={
             boardHidden
-              ? "flex min-h-0 min-w-0 flex-1 flex-col rounded-2xl bg-muted/40 p-2"
-              : "flex min-h-0 min-w-0 flex-none flex-col rounded-2xl bg-muted/40 p-2"
+              ? "flex min-h-0 min-w-0 flex-1 flex-col rounded-2xl bg-surface p-2 shadow-(--surface-shadow) ring-1 ring-surface-border"
+              : "flex min-h-0 min-w-0 flex-none flex-col rounded-2xl bg-surface p-2 shadow-(--surface-shadow) ring-1 ring-surface-border"
           }
         >
           <div className="flex items-center gap-2 px-2 pt-1 pb-2">
-            <span className="text-[13px] font-semibold">Assistant</span>
+            <span className="text-label font-semibold">Assistant</span>
           </div>
           <div className="min-h-0 min-w-0 flex-1 px-1">
             <ChatPanel onCreate={handleCreate} />
@@ -280,14 +280,14 @@ function Board() {
             onClick={() => setBoardHidden(false)}
             aria-label="Show board"
             title="Show board"
-            className="ml-1 flex w-6 flex-none cursor-pointer flex-col items-center justify-center rounded-2xl bg-muted/40 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            className="ml-1 flex w-6 flex-none cursor-pointer flex-col items-center justify-center rounded-2xl bg-surface text-muted-foreground ring-1 ring-surface-border transition-colors hover:bg-surface-hover hover:text-foreground"
           >
             <HugeiconsIcon icon={PanelRightIcon} strokeWidth={2} className="size-4" />
           </button>
         )}
 
         {!boardHidden && (
-        <section className="min-h-0 min-w-0 flex-1 overflow-x-auto">
+        <CollectionPage>
           <div className="grid h-full min-h-0 grid-cols-[repeat(3,minmax(230px,1fr))] gap-3">
             <div className="min-h-0 min-w-0">
               <KanbanColumn
@@ -326,7 +326,7 @@ function Board() {
               />
             </div>
           </div>
-        </section>
+        </CollectionPage>
         )}
       </main>
       </div>

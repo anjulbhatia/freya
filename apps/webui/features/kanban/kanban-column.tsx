@@ -47,13 +47,15 @@ export function KanbanColumn({ title, column, cards, onAdvance, onMove, onQuickA
         if (id) onMove(id, column);
       }}
       className={cn(
-        "flex h-full min-h-0 flex-col overflow-hidden rounded-2xl bg-muted/40 p-2 transition-all",
-        over && "bg-primary/10 ring-2 ring-primary/50 ring-inset"
+        "flex h-full min-h-0 flex-col overflow-hidden rounded-2xl bg-surface p-2 shadow-(--surface-shadow) ring-1 ring-surface-border transition-all",
+        over && "bg-surface-selected ring-2 ring-primary/50 ring-inset"
       )}
     >
       <div className="flex items-center gap-2 px-2 pt-1 pb-2">
-        <span className="text-[13px] font-semibold">{title}</span>
-        <span className="text-xs text-muted-foreground">{cards.length}</span>
+        <span className="text-label font-semibold">{title}</span>
+        <span className="rounded-full bg-muted px-1.5 py-0.5 text-micro font-medium text-muted-foreground">
+          {cards.length}
+        </span>
       </div>
       <ScrollArea className="fc-scroll min-h-0 flex-1 px-1">
         <div className="flex flex-col gap-2 pb-1">
@@ -61,9 +63,14 @@ export function KanbanColumn({ title, column, cards, onAdvance, onMove, onQuickA
             <KanbanCard key={c.id} card={c} onAdvance={onAdvance} />
           ))}
           {cards.length === 0 && !adding && (
-            <p className="px-2 py-6 text-center text-xs text-muted-foreground">
-              Nothing here yet
-            </p>
+            <div className="flex flex-col items-center gap-1 px-2 py-8 text-center">
+              <p className="text-caption font-medium text-muted-foreground">
+                Nothing here yet
+              </p>
+              <p className="text-micro text-faint-foreground">
+                Drag a card in or add one below
+              </p>
+            </div>
           )}
         </div>
       </ScrollArea>
@@ -78,7 +85,7 @@ export function KanbanColumn({ title, column, cards, onAdvance, onMove, onQuickA
               if (e.key === "Escape") setAdding(false);
             }}
             placeholder="Card title…"
-            className="h-8 rounded-xl border-0 bg-card shadow-xs"
+            className="h-8 rounded-xl border-0 bg-surface-raised shadow-(--surface-shadow)"
           />
           <Button size="sm" onClick={submit} disabled={!draft.trim()}>
             Add

@@ -9,5 +9,6 @@ Start here. Freya = one project → chat + Kanban → agent proposes → human a
 - `database.md` – Postgres + Drizzle schema, migrations, seed.
 - `monorepo.md` – why Bun workspaces, no Turbo (yet). When to add it.
 - `webmcp.md` – tool table, approval gate, `POST /api/webmcp` contract.
+- `ui.md` – tokens, button/dialog/layout/card contract.
 
 Source of truth: `AGENTS.md` (product spec), `packages/freya/src`, `apps/webui`.

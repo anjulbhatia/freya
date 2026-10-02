@@ -26,6 +26,14 @@ const TYPE_PILL: Record<CardData["type"], string> = {
   idea: "bg-violet-500/15 text-violet-700 dark:text-violet-300",
 };
 
+const TYPE_EDGE: Record<CardData["type"], string> = {
+  meeting: "bg-sky-500",
+  bug: "bg-red-500",
+  task: "bg-amber-500",
+  "follow-up": "bg-teal-500",
+  idea: "bg-violet-500",
+};
+
 export function KanbanCard({
   card,
   onAdvance,
@@ -38,6 +46,7 @@ export function KanbanCard({
   const active = STAGE_INDEX[card.column];
   const next = NEXT_COLUMN[card.column];
   const doneCount = Math.min(active, pipeline.length);
+  const proposed = (card.summary ?? "").startsWith("Proposed");
   const date = card.createdAt
     ? new Date(card.createdAt.replace(" ", "T")).toLocaleDateString([], {
         month: "short",
@@ -56,24 +65,36 @@ export function KanbanCard({
       }}
       onDragEnd={() => setDragging(false)}
       className={cn(
-        "cursor-grab rounded-xl border-0 bg-card shadow-xs transition-all active:cursor-grabbing",
-        dragging ? "scale-[0.98] opacity-50 shadow-md" : "hover:shadow-md"
+        "group relative cursor-grab overflow-hidden bg-card shadow-(--surface-shadow) ring-1 transition-all active:cursor-grabbing",
+        proposed
+          ? "ring-2 ring-warning/60"
+          : "ring-surface-border hover:shadow-(--floating-shadow) hover:ring-primary/30",
+        dragging && "scale-[0.98] opacity-50 shadow-(--floating-shadow)"
       )}
     >
-      <CardContent className="flex flex-col gap-2 py-3">
-        <p className="text-[13px] leading-snug font-medium">{card.title}</p>
+      <span
+        aria-hidden
+        className={cn("absolute inset-y-0 left-0 w-1", TYPE_EDGE[card.type])}
+      />
+      <CardContent className="flex flex-col gap-2 py-3 pl-4">
+        <p className="text-label leading-snug font-medium">{card.title}</p>
 
         <div className="flex items-center gap-1.5">
           <span
             className={cn(
-              "rounded-full px-2 py-0.5 text-[11px] font-medium",
+              "rounded-full px-2 py-0.5 text-micro font-medium",
               TYPE_PILL[card.type]
             )}
           >
             {card.type}
           </span>
+          {proposed && (
+            <span className="rounded-full bg-warning/15 px-2 py-0.5 text-micro font-semibold text-warning">
+              awaiting approval
+            </span>
+          )}
           {date && (
-            <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
+            <span className="flex items-center gap-1 text-micro text-muted-foreground">
               <HugeiconsIcon icon={Calendar01Icon} strokeWidth={2} className="size-3" />
               {date}
             </span>
@@ -82,7 +103,7 @@ export function KanbanCard({
             <Button
               variant="ghost"
               size="icon-xs"
-              className="ml-auto"
+              className="ml-auto opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
               onClick={() => onAdvance(card.id)}
               aria-label={`Move to ${next}`}
               title={`Move to ${next}`}
@@ -93,7 +114,7 @@ export function KanbanCard({
         </div>
 
         {card.summary && (
-          <p className="text-[11px] leading-snug text-muted-foreground">
+          <p className="line-clamp-3 text-caption leading-snug text-muted-foreground">
             {card.summary}
           </p>
         )}
@@ -117,7 +138,7 @@ export function KanbanCard({
                   className={cn(
                     "relative flex size-6 items-center justify-center rounded-full",
                     done && "bg-primary/10 ring-1 ring-primary/40",
-                    current && "bg-card shadow-xs ring-2 ring-primary/40",
+                    current && "bg-surface-raised shadow-(--surface-shadow) ring-2 ring-primary/40",
                     !done && !current && "bg-muted opacity-60"
                   )}
                 >
@@ -131,7 +152,7 @@ export function KanbanCard({
               </span>
             );
           })}
-          <span className="ml-1 text-[10px] text-muted-foreground">
+          <span className="ml-1 text-micro text-muted-foreground">
             {next === null ? "Done" : `Step ${doneCount + 1}/${pipeline.length}`}
           </span>
         </div>
