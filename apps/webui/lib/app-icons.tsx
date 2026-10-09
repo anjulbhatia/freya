@@ -2,6 +2,7 @@
 
 import Gmail from "@thesvg/react/gmail";
 import GoogleCalendar from "@thesvg/react/google-calendar";
+import GoogleMeet from "@thesvg/react/google-meet";
 import Notion from "@thesvg/react/notion";
 import Slack from "@thesvg/react/slack";
 import Github from "@thesvg/react/github";
@@ -11,6 +12,7 @@ import type { ProviderId } from "@/lib/freya";
 const MAP = {
   gmail: Gmail,
   calendar: GoogleCalendar,
+  meet: GoogleMeet,
   notion: Notion,
   slack: Slack,
   github: Github,

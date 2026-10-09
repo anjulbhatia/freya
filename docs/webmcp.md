@@ -3,7 +3,7 @@
 External callers (and future LLM loop) use one surface:
 `GET /api/webmcp` → manifest, `POST /api/webmcp { name, args }` → result.
 
-Canonical table: `webmcpTools` in `packages/freya/src/webmcp/tools.ts`.
+Canonical table: `webmcpTools` in `packages/integrations/src/webmcp/tools.ts`.
 Dispatcher: `callWebmcpTool(name, rawArgs)` — Zod-validates, enforces approval, runs.
 
 ## Approval rule

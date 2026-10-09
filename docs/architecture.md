@@ -11,17 +11,19 @@ apps/webui/            Next.js App Router + tRPC + REST. UI only.
   features/            chat, kanban, health, library, profile, projects, settings
   lib/freya.ts         UI constants: PROVIDERS, COLUMNS, PIPELINES, NEXT_COLUMN
   lib/trpc.ts, store.ts, webmcp.ts, app-icons.tsx
-packages/freya/        Agent kernel. UI-agnostic. No webui imports.
-  src/agent/           classify.ts, flows.ts, run.ts, prompts.ts
-  src/integrations/    types.ts, registry.ts + gmail/calendar/notion/github/slack stubs
-  src/db/              store.ts (port), client.ts (facade), index.ts, postgres-store.ts, schema-pg.ts
+packages/shared/       Domain kernel. Pure: types, schemas, classify, prompts. No deps.
+packages/db/           Postgres store. Drizzle schema, adapter, client facade.
+packages/integrations/ Gmail, Calendar, Meet, Notion, Slack, GitHub + agent flows + webmcp.
+  src/agent/           flows.ts, run.ts (orchestration; imports shared + db)
+  src/integrations/    types.ts, registry.ts + gmail/calendar/meet/notion/github/slack stubs
   src/webmcp/          tools.ts (canonical tool table), health.ts
-  src/types.ts, schemas.ts, index.ts (barrel)
+packages/auth/         Auth placeholder. No session logic yet.
+packages/ui/           Shared UI placeholder. Webui owns components for now.
 ```
 
-Package name: `freya`. Import via `freya/*`
-(tsconfig path: `freya/* → ../../packages/freya/src/*`).
-UI helper via `@/lib/freya`. Import direction is one-way: **webui → kernel**.
+Packages: `shared`, `db`, `integrations`, `auth` (placeholder), `ui` (placeholder).
+Webui imports via tsconfig paths (`db/*`, `shared/*`, `integrations/*`).
+UI helper via `@/lib/freya`. Import direction is one-way: **webui → packages**.
 
 ## Request paths
 
@@ -29,15 +31,15 @@ UI helper via `@/lib/freya`. Import direction is one-way: **webui → kernel**.
 - **REST** (`/api/*`): thin wrappers over kernel `getStore()` / `processNext()`:
   `cards`, `projects`, `agent/process-next`, `agent/config`, `connections`, `profile`.
 - **WebMCP** (`/api/webmcp`, GET manifest / POST dispatch):
-  single choke point `callWebmcpTool(name, args)` in `packages/freya/src/webmcp/tools.ts`.
+  single choke point `callWebmcpTool(name, args)` in `packages/integrations/src/webmcp/tools.ts`.
   Validates with Zod, enforces `requiresApproval` gate, then dispatches.
 
 ## Key types
 
-Kernel owns domain enums (`src/types.ts` + `src/schemas.ts`):
+Shared owns domain enums (`packages/shared/src/types.ts` + `schemas.ts`):
 `CardType = meeting | task | bug | idea | follow-up`,
 `ColumnId = planned | ongoing | completed`,
-`ProviderId = gmail | calendar | notion | slack | github`.
+`ProviderId = gmail | calendar | meet | notion | slack | github`.
 
 UI owns labels (`apps/webui/lib/freya.ts`):
 `COLUMNS = planned→Tasks, ongoing→Running, completed→Done`.

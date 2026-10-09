@@ -1,0 +1,27 @@
+{
+  "name": "integrations",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Freya integrations: gmail, calendar, meet, notion, slack, github, registry, agent flows, webmcp.",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./registry": "./src/registry.ts",
+    "./gmail": "./src/gmail.ts",
+    "./calendar": "./src/calendar.ts",
+    "./meet": "./src/meet.ts",
+    "./notion": "./src/notion.ts",
+    "./slack": "./src/slack.ts",
+    "./github": "./src/github.ts",
+    "./agent/*": "./src/agent/*.ts",
+    "./webmcp/*": "./src/webmcp/*.ts"
+  },
+  "dependencies": {
+    "db": "workspace:*",
+    "shared": "workspace:*",
+    "zod": "^4.6.4"
+  }
+}

@@ -1,8 +1,8 @@
 {
-  "name": "freya",
+  "name": "db",
   "version": "0.1.0",
   "private": true,
-  "description": "Freya agent kernel: classifier, flows, integrations, store. UI-agnostic.",
+  "description": "Freya Postgres store: Drizzle schema, adapter, client facade. No shared/integration imports.",
   "type": "module",
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json",
@@ -11,18 +11,14 @@
     "db:studio": "drizzle-kit studio"
   },
   "exports": {
-    "./agent/*": "./src/agent/*.ts",
-    "./integrations/*": "./src/integrations/*.ts",
-    "./db/*": "./src/db/*",
-    "./webmcp/*": "./src/webmcp/*.ts",
-    "./types": "./src/types.ts",
-    "./schemas": "./src/schemas.ts",
-    "./index": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./store": "./src/store.ts",
+    "./client": "./src/client.ts",
+    "./schema": "./src/schema-pg.ts"
   },
   "dependencies": {
     "drizzle-orm": "^0.45.3",
-    "pg": "^8.23.0",
-    "zod": "^4.6.4"
+    "pg": "^8.23.0"
   },
   "devDependencies": {
     "@types/pg": "^8.23.1",

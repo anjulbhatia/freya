@@ -8,9 +8,9 @@
     "build": "bun run --filter webui build",
     "start": "bun run --filter webui start",
     "lint": "bun run --filter webui lint",
-    "typecheck": "bun run --filter webui typecheck && bun run --filter freya typecheck",
-    "db:generate": "bun run --filter freya db:generate",
-    "db:migrate": "bun run --filter freya db:migrate"
+    "typecheck": "bun run --filter webui typecheck && bun run --filter shared typecheck && bun run --filter db typecheck && bun run --filter integrations typecheck && bun run --filter auth typecheck && bun run --filter ui typecheck",
+    "db:generate": "bun run --filter db db:generate",
+    "db:migrate": "bun run --filter db db:migrate"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.69",

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getAgentConfig, saveAgentConfig } from "freya/db/client";
+import { getAgentConfig, saveAgentConfig } from "db/client";
 
 const bodySchema = z.object({
   model: z.string().trim().min(1).max(80).optional(),

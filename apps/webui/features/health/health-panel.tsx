@@ -42,7 +42,7 @@ export interface HealthCheck {
 function providerOf(name: string): ProviderId | null {
   if (!name.startsWith("provider/")) return null;
   const id = name.slice("provider/".length);
-  return (["gmail", "calendar", "notion", "slack", "github"] as const).includes(
+  return (["gmail", "calendar", "meet", "notion", "slack", "github"] as const).includes(
     id as ProviderId
   )
     ? (id as ProviderId)

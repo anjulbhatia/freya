@@ -1,10 +1,10 @@
-import type { CardType } from "../types";
-import type { RunContext, ToolResult } from "../integrations/types";
-import * as gmail from "../integrations/gmail";
-import * as calendar from "../integrations/calendar";
-import * as notion from "../integrations/notion";
-import * as github from "../integrations/github";
-import * as slack from "../integrations/slack";
+import type { CardType } from "shared/types";
+import type { RunContext, ToolResult } from "../types";
+import * as gmail from "../gmail";
+import * as calendar from "../calendar";
+import * as notion from "../notion";
+import * as github from "../github";
+import * as slack from "../slack";
 
 export interface FlowOutcome {
   summary: string;

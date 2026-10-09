@@ -1,17 +1,18 @@
 # Integrations
 
-Five providers, ids owned by kernel (`ProviderId`):
-`gmail`, `calendar` (Google), `notion`, `slack`, `github`.
+Six providers, ids owned by shared (`ProviderId`):
+`gmail`, `calendar` (Google), `meet` (Google Meet), `notion`, `slack`, `github`.
 Labels owned by UI (`apps/webui/lib/freya.ts:PROVIDERS`).
 
 ## Current status: stubs
 
-All five modules in `packages/freya/src/integrations/` return canned
+All six modules in `packages/integrations/src/` return canned
 `ToolResult { ok, step, links? }` after `mockLatency()` (~30–110ms).
 No OAuth, no network calls, no secrets. Safe for demo flows end-to-end.
 
 - `gmail.ts`: `search` (read), `draft` (safe), `send(ctx)` — refuses unless `ctx.approved`.
 - `calendar.ts`: `listEvents` (read), `createEvent(ctx)` — refuses unless approved, never overwrites (stub: always creates).
+- `meet.ts`: `getSpace` (read), `createSpace(ctx)` — gated like calendar.
 - `notion.ts`: `findContact` (read), `createPage(ctx)`, `append(ctx)` — writes refuse unless approved.
 - `github.ts`: `getPullRequest(n)` (read), `createIssue(ctx)` — gated.
 - `slack.ts`: `postMessage(ctx)` — gated. `flows.ts` uses channel `"eng"`.

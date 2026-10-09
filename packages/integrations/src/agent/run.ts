@@ -1,5 +1,5 @@
-import { getStore } from "../db/index";
-import { classify } from "./classify";
+import { getStore } from "db";
+import { classify } from "shared/agent/classify";
 import { runFlow } from "./flows";
 
 export interface ProcessResult {

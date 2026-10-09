@@ -2,7 +2,7 @@
  * WebMCP tool library for Freya.
  *
  * One canonical table of every operation the agent and external callers
- * may perform: kanban, projects, agent loop, all five integrations,
+ * may perform: kanban, projects, agent loop, all six integrations,
  * profile, connections, service status.
  *
  * Rules:
@@ -18,17 +18,18 @@
  *   and is itself gated to prevent silent self-approval by default flows.
  */
 import { z } from "zod";
-import { getStore } from "../db/index";
-import { cardTypeSchema, columnIdSchema, providerIdSchema } from "../schemas";
-import { classify } from "../agent/classify";
+import { getStore } from "db";
+import { cardTypeSchema, columnIdSchema, providerIdSchema } from "shared/schemas";
+import { classify } from "shared/agent/classify";
 import { processNext } from "../agent/run";
-import * as gmail from "../integrations/gmail";
-import * as calendar from "../integrations/calendar";
-import * as notion from "../integrations/notion";
-import * as github from "../integrations/github";
-import * as slack from "../integrations/slack";
-import { getServiceStatus } from "../integrations/registry";
-import type { RunContext } from "../integrations/types";
+import * as gmail from "../gmail";
+import * as calendar from "../calendar";
+import * as meet from "../meet";
+import * as notion from "../notion";
+import * as github from "../github";
+import * as slack from "../slack";
+import { getServiceStatus } from "../registry";
+import type { RunContext } from "../types";
 
 export interface WebmcpToolDef {
   name: string;
@@ -309,6 +310,23 @@ export const webmcpTools: WebmcpToolDef[] = [
       slack.postMessage(ctxFor(a.text, a.approved), a.channel, a.text),
   },
 
+  // ---- Meet ----
+  {
+    name: "meet.getSpace",
+    description: "Look up a Meet space (read-only).",
+    requiresApproval: false,
+    schema: z.object({ name: z.string().trim().min(1).max(200) }),
+    run: async (a: { name: string }) => meet.getSpace(a.name),
+  },
+  {
+    name: "meet.createSpace",
+    description: "Create a Meet space. External write: needs approval.",
+    requiresApproval: true,
+    schema: z.object({ title: titleField, approved: approvedFlag }),
+    run: async (a: { title: string; approved: boolean }) =>
+      meet.createSpace(ctxFor(a.title, a.approved), a.title),
+  },
+
   // ---- Profile / connections / status ----
   {
     name: "profile.get",
@@ -354,7 +372,7 @@ export const webmcpTools: WebmcpToolDef[] = [
   },
   {
     name: "service.status",
-    description: "Live status of all five providers from connection rows.",
+    description: "Live status of all six providers from connection rows.",
     requiresApproval: false,
     schema: z.object({}),
     run: async () => getServiceStatus(),

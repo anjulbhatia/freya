@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getLatestProfile, saveProfile } from "freya/db/client";
+import { getLatestProfile, saveProfile } from "db/client";
 
 export async function GET() {
   return NextResponse.json((await getLatestProfile()) ?? null);

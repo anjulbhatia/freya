@@ -1,5 +1,5 @@
 import { initTRPC } from "@trpc/server";
-import { cardTypeSchema, columnIdSchema } from "freya/schemas";
+import { cardTypeSchema, columnIdSchema } from "shared/schemas";
 
 const t = initTRPC.create();
 

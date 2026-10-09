@@ -1,6 +1,6 @@
 # Agent loop
 
-Core: `processNext(approved, projectId?)` in `packages/freya/src/agent/run.ts`.
+Core: `processNext(approved, projectId?)` in `packages/integrations/src/agent/run.ts`.
 
 ```
 getNextCard → getAgentConfig + classify + getLatestProfile

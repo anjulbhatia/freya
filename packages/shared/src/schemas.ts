@@ -6,7 +6,7 @@ import { z } from "zod";
  */
 export const cardTypeSchema = z.enum(["meeting", "task", "bug", "idea", "follow-up"]);
 export const columnIdSchema = z.enum(["planned", "ongoing", "completed"]);
-export const providerIdSchema = z.enum(["gmail", "calendar", "notion", "slack", "github"]);
+export const providerIdSchema = z.enum(["gmail", "calendar", "meet", "notion", "slack", "github"]);
 
 export type CardTypeSchema = z.infer<typeof cardTypeSchema>;
 export type ColumnIdSchema = z.infer<typeof columnIdSchema>;

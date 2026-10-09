@@ -1,4 +1,4 @@
-import type { CardType, ColumnId, ProviderId } from "freya/types";
+import type { CardType, ColumnId, ProviderId } from "shared/types";
 
 export type { CardType, ColumnId, ProviderId };
 
@@ -6,6 +6,7 @@ export type { CardType, ColumnId, ProviderId };
 export const PROVIDERS = [
   { id: "gmail", label: "Gmail" },
   { id: "calendar", label: "Google Calendar" },
+  { id: "meet", label: "Google Meet" },
   { id: "notion", label: "Notion" },
   { id: "slack", label: "Slack" },
   { id: "github", label: "GitHub" },

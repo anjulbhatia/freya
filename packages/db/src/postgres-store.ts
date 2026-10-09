@@ -9,14 +9,14 @@ import { nowIso, type AgentConfig, type Card, type CardPatch, type Store } from 
 
 function migrationsDir(): string | undefined {
   const candidates = [
-    join(process.cwd(), "packages", "freya", "drizzle", "pg"),
-    join(process.cwd(), "..", "packages", "freya", "drizzle", "pg"),
-    join(process.cwd(), "..", "..", "packages", "freya", "drizzle", "pg"),
+    join(process.cwd(), "packages", "db", "drizzle", "pg"),
+    join(process.cwd(), "..", "packages", "db", "drizzle", "pg"),
+    join(process.cwd(), "..", "..", "packages", "db", "drizzle", "pg"),
   ];
   return candidates.find((c) => existsSync(c));
 }
 
-const PROVIDERS = ["gmail", "calendar", "notion", "slack", "github"];
+const PROVIDERS = ["gmail", "calendar", "meet", "notion", "slack", "github"];
 
 export function createPostgresStore(url = process.env.DATABASE_URL!): Store {
   const pool = new Pool({ connectionString: url });

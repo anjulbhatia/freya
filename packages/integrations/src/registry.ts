@@ -1,5 +1,5 @@
-import { getStore } from "../db/index";
-import type { ProviderId } from "../types";
+import { getStore } from "db";
+import type { ProviderId } from "shared/types";
 
 export interface ServiceStatus {
   provider: ProviderId;

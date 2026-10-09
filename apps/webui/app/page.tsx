@@ -19,7 +19,7 @@ import { PageHeader, CollectionPage } from "@/components/ui/page-header";
 import { ChatPanel } from "@/features/chat/chat-panel";
 import { KanbanColumn } from "@/features/kanban/kanban-column";
 import type { CardType, ColumnId, KanbanCard } from "@/lib/freya";
-import type { Card as CardRow } from "freya/db/client";
+import type { Card as CardRow } from "db/client";
 import { NEXT_COLUMN } from "@/lib/freya";
 import { cn } from "cn";
 

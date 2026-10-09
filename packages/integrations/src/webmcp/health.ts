@@ -7,9 +7,9 @@
  * "degraded"; all green -> "operational". Same vocabulary as public
  * status pages so the panel reads instantly.
  */
-import { getStore } from "../db/index";
-import { classify } from "../agent/classify";
-import { getServiceStatus } from "../integrations/registry";
+import { getStore } from "db";
+import { classify } from "shared/agent/classify";
+import { getServiceStatus } from "../registry";
 import { webmcpTools } from "./tools";
 
 export type HealthGroup = "api" | "webmcp";

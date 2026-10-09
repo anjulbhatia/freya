@@ -12,7 +12,7 @@
 cp .env.example .env
 # edit DATABASE_URL, e.g. postgresql://freya:freya@localhost:5432/freya
 bun install
-bun run db:migrate   # runs drizzle migrations from packages/freya/drizzle/pg
+bun run db:migrate   # runs drizzle migrations from packages/db/drizzle/pg
 bun run dev          # starts webui (Next.js) at http://localhost:3000
 ```
 
@@ -23,12 +23,12 @@ bun run dev          # starts webui (Next.js) at http://localhost:3000
 | `bun run dev` | `webui` Next dev |
 | `bun run build` / `start` | `webui` prod build / serve |
 | `bun run lint` | `webui` eslint |
-| `bun run typecheck` | `webui` + `freya` kernel `tsc --noEmit` |
-| `bun run db:generate` | drizzle-kit generate (run in `packages/freya`) |
+| `bun run typecheck` | `webui` + `shared` + `db` + `integrations` + `auth` + `ui` `tsc --noEmit` |
+| `bun run db:generate` | drizzle-kit generate (run in `packages/db`) |
 | `bun run db:migrate` | drizzle-kit migrate |
 
 Workspaces: `apps/*`, `packages/*`. Bun `--filter` selects the package
-(`webui`, `freya`). See `monorepo.md` for why no Turbo.
+(`webui`, `shared`, `db`, `integrations`, `auth`, `ui`). See `monorepo.md` for why no Turbo.
 
 ## Env
 
@@ -39,7 +39,7 @@ FREYA_APPROVAL_MODE="manual"  # manual | auto
 ```
 
 `DATABASE_URL` is required. Kernel throws if missing
-(`packages/freya/src/db/index.ts:getDatabaseUrl`).
+(`packages/db/src/index.ts:getDatabaseUrl`).
 
 ## First run checklist
 

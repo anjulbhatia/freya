@@ -20,7 +20,16 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "freya/*": ["../../packages/freya/src/*"]
+      "db": ["../../packages/db/src/index.ts"],
+      "db/*": ["../../packages/db/src/*"],
+      "shared": ["../../packages/shared/src/index.ts"],
+      "shared/*": ["../../packages/shared/src/*"],
+      "integrations": ["../../packages/integrations/src/index.ts"],
+      "integrations/*": ["../../packages/integrations/src/*"],
+      "auth": ["../../packages/auth/src/index.ts"],
+      "auth/*": ["../../packages/auth/src/*"],
+      "ui": ["../../packages/ui/src/index.ts"],
+      "ui/*": ["../../packages/ui/src/*"]
     }
   },
   "include": [

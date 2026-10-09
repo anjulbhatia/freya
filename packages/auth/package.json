@@ -1,0 +1,14 @@
+{
+  "name": "auth",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Freya auth placeholder. Session/user helpers land here.",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {}
+}

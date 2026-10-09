@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createCard, listCardsByProject, updateCard } from "freya/db/client";
+import { createCard, listCardsByProject, updateCard } from "db/client";
 import { columnId, cardType, publicProcedure, router } from "@/server/trpc";
 
 export const cardsRouter = router({

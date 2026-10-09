@@ -1,5 +1,5 @@
 import { publicProcedure, router } from "@/server/trpc";
-import { apiChecks, getHealth, summarize, webmcpChecks } from "freya/webmcp/health";
+import { apiChecks, getHealth, summarize, webmcpChecks } from "integrations/webmcp/health";
 
 export const healthRouter = router({
   /** Lightweight reachability probe. No DB touch. */

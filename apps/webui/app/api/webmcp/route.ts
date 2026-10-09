@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { PROVIDERS } from "@/lib/freya";
-import { getServiceStatus } from "freya/integrations/registry";
-import { callWebmcpTool, webmcpManifest } from "freya/webmcp/tools";
+import { getServiceStatus } from "integrations/registry";
+import { callWebmcpTool, webmcpManifest } from "integrations/webmcp/tools";
 
 export async function GET() {
   const t0 = Date.now();

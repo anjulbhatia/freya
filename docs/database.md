@@ -2,12 +2,12 @@
 
 Postgres-only. Drizzle ORM. No SQLite, no fallback.
 
-- Schema: `packages/freya/src/db/schema-pg.ts`
-- Adapter: `src/db/postgres-store.ts` (implements `Store` port in `src/db/store.ts`)
-- Access: `getStore()` singleton in `src/db/index.ts` (requires `DATABASE_URL`);
-  `src/db/client.ts` is a back-compat facade — new code uses `getStore()`.
-- Config: `packages/freya/drizzle.config.ts`, migrations in `packages/freya/drizzle/pg/`.
-  Migration dir lookup tries `cwd/packages/freya/drizzle/pg` + two parent variants
+- Schema: `packages/db/src/schema-pg.ts`
+- Adapter: `packages/db/src/postgres-store.ts` (implements `Store` port in `store.ts`)
+- Access: `getStore()` singleton in `packages/db/src/index.ts` (requires `DATABASE_URL`);
+  `client.ts` is a back-compat facade — new code uses `getStore()`.
+- Config: `packages/db/drizzle.config.ts`, migrations in `packages/db/drizzle/pg/`.
+  Migration dir lookup tries `cwd/packages/db/drizzle/pg` + two parent variants
   so `migrate()` works from root or `apps/webui`.
 
 ## Tables
@@ -18,7 +18,7 @@ Postgres-only. Drizzle ORM. No SQLite, no fallback.
 | `cards` | title, type, status (`planned|ongoing|completed`), priority, summary, linksJson, approvalFlag, projectId. `getNextCard` picks `planned` first, then priority desc, id asc. |
 | `runs` | cardId FK cascade, stepsJson, result, createdAt. Audit log, one row per `processNext`. |
 | `profiles` | name, context. `getLatestProfile` = max id. |
-| `connections` | provider unique, status, scopes. Seeded `disconnected` × 5. |
+| `connections` | provider unique, status, scopes. Seeded `disconnected` × 6. |
 | `agent_config` | single row id=1: model (`auto`), approval_mode, review_threshold (0.5). |
 
 Timestamps are ISO strings set in app code (`nowIso()`), not DB defaults.
@@ -26,7 +26,7 @@ Timestamps are ISO strings set in app code (`nowIso()`), not DB defaults.
 ## Commands
 
 ```bash
-bun run db:generate  # drizzle-kit generate (from packages/freya)
+bun run db:generate  # drizzle-kit generate (from packages/db)
 bun run db:migrate   # drizzle-kit migrate — auto-runs on first store use via ensure()+seed()
 ```
 
