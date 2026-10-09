@@ -21,7 +21,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Kbd } from "@/components/ui/kbd";
 import { Spinner } from "@/components/ui/spinner";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -135,6 +134,9 @@ export function ChatPanel({ onCreate }: Props) {
   useEffect(() => {
     const saved = getConnections();
     const on = PROVIDERS.map((p) => p.id).filter((id) => saved[id]);
+    // Intentional mount-only sync from localStorage: keeps server render
+    // ([] default) hydration-safe, then shows saved connections on client.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setConnected(on.length > 0 ? on : PROVIDERS.map((p) => p.id));
   }, []);
 

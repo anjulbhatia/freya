@@ -47,12 +47,14 @@ export function KanbanCard({
   const next = NEXT_COLUMN[card.column];
   const doneCount = Math.min(active, pipeline.length);
   const proposed = (card.summary ?? "").startsWith("Proposed");
-  const date = card.createdAt
-    ? new Date(card.createdAt.replace(" ", "T")).toLocaleDateString([], {
-        month: "short",
-        day: "numeric",
-      })
-    : null;
+  const parsed = card.createdAt ? new Date(card.createdAt) : null;
+  const date =
+    parsed && !Number.isNaN(parsed.getTime())
+      ? parsed.toLocaleDateString([], {
+          month: "short",
+          day: "numeric",
+        })
+      : null;
 
   return (
     <Card

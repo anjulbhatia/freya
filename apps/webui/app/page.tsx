@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { trpc } from "@/lib/trpc";
 import { useProfileGate } from "@/lib/route-guard";
@@ -62,7 +62,7 @@ function Board() {
 
   const utils = trpc.useUtils();
   const projectsQuery = trpc.projects.list.useQuery(undefined, { enabled: ready });
-  const projects: Project[] = projectsQuery.data ?? [];
+  const projects: Project[] = useMemo(() => projectsQuery.data ?? [], [projectsQuery.data]);
   const cardsQuery = trpc.cards.listByProject.useQuery(
     { projectId: activeId ?? 0 },
     { enabled: ready && activeId !== null }
@@ -82,8 +82,11 @@ function Board() {
     invalidateCards();
   };
 
+  // Intentional gate-only refetch: runs once when the profile gate
+  // resolves, not on every render. `reload` stays out of deps on purpose.
   useEffect(() => {
     if (ready) reload();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready]);
 
   // Default to the first project once loaded and none selected.
@@ -127,10 +130,11 @@ function Board() {
 
   async function handleCreate(c: KanbanCard) {
     if (activeId === null) return;
+    const status: ColumnId = VALID_COLUMNS.includes(c.column) ? c.column : "planned";
     createCardMut.mutate({
       title: c.title,
       type: c.type,
-      status: "planned",
+      status,
       projectId: activeId,
     });
   }
@@ -296,8 +300,8 @@ function Board() {
                 cards={planned}
                 onAdvance={handleAdvance}
                 onMove={handleMove}
-                onQuickAdd={(_, title) =>
-                  handleCreate({ id: crypto.randomUUID(), title, type: "task", column: "planned" })
+                onQuickAdd={(column, title) =>
+                  handleCreate({ id: crypto.randomUUID(), title, type: "task", column })
                 }
               />
             </div>
@@ -308,8 +312,8 @@ function Board() {
                 cards={ongoing}
                 onAdvance={handleAdvance}
                 onMove={handleMove}
-                onQuickAdd={(_, title) =>
-                  handleCreate({ id: crypto.randomUUID(), title, type: "task", column: "planned" })
+                onQuickAdd={(column, title) =>
+                  handleCreate({ id: crypto.randomUUID(), title, type: "task", column })
                 }
               />
             </div>
@@ -320,8 +324,8 @@ function Board() {
                 cards={completed}
                 onAdvance={handleAdvance}
                 onMove={handleMove}
-                onQuickAdd={(_, title) =>
-                  handleCreate({ id: crypto.randomUUID(), title, type: "task", column: "planned" })
+                onQuickAdd={(column, title) =>
+                  handleCreate({ id: crypto.randomUUID(), title, type: "task", column })
                 }
               />
             </div>
@@ -350,7 +354,6 @@ function Board() {
         onOpenChange={setProfileOpen}
         onProfileSaved={(n) => setFounderName(n)}
       />
-      <HealthModal open={healthOpen} onOpenChange={setHealthOpen} />
       <LibraryModal open={libraryOpen} onOpenChange={setLibraryOpen} />
     </div>
   );
