@@ -5,10 +5,11 @@
   "workspaces": ["apps/*", "packages/*"],
   "scripts": {
     "dev": "bun run --filter webui dev",
+    "mobile": "bun run --filter mobile start",
     "build": "bun run --filter webui build",
     "start": "bun run --filter webui start",
     "lint": "bun run --filter webui lint",
-    "typecheck": "bun run --filter webui typecheck && bun run --filter shared typecheck && bun run --filter db typecheck && bun run --filter integrations typecheck && bun run --filter auth typecheck && bun run --filter ui typecheck",
+    "typecheck": "bun run --filter webui typecheck && bun run --filter shared typecheck && bun run --filter db typecheck && bun run --filter integrations typecheck && bun run --filter auth typecheck && bun run --filter ui typecheck && bun run --filter mobile typecheck",
     "db:generate": "bun run --filter db db:generate",
     "db:migrate": "bun run --filter db db:migrate"
   },

@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+@theme {
+  --color-freya-bg: #0a0a0b;
+  --color-freya-card: #131316;
+  --color-freya-accent: #e8ff3c;
+}

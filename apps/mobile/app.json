@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Freya",
+    "slug": "freya-mobile",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "primaryColor": "#0a0a0b",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "ai.freya.mobile"
+    },
+    "android": {
+      "package": "ai.freya.mobile",
+      "adaptiveIcon": {
+        "backgroundColor": "#0a0a0b"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}
